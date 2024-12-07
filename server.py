@@ -18,6 +18,8 @@ async def logs(request):
     print("LOG headers:")
     for key, value in request.headers.items():
         print(key, value)
+    print("DATA")
+    print(data)
     return web.Response()
 
 
