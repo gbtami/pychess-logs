@@ -15,10 +15,9 @@ if sys.platform not in ("win32", "darwin"):
 
 async def logs(request):
     data = await request.read()
-    print("LOG headers:")
-    for key, value in request.headers.items():
-        print(key, value)
-    print("DATA")
+    msg_token = request.headers["Logplex-Msg-Token"]
+    msg_count = request.headers["Logplex-Msg-Count"]
+    print("Logplex-Msg-Count:", msg_count, msg_token)
     print(data)
     return web.Response()
 
