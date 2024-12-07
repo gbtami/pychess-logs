@@ -14,10 +14,9 @@ if sys.platform not in ("win32", "darwin"):
 
 
 async def logs(request):
-    data = await request.post()
+    data = await request.read()
     print("LOG POSTED:")
-    for key, item in data.items():
-        print(key, item)
+    print(data)
     return web.Response()
 
 
