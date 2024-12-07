@@ -18,7 +18,7 @@ async def logs(request):
     msg_token = request.headers["Logplex-Drain-Token"]
     msg_count = request.headers["Logplex-Msg-Count"]
     print("Logplex-Msg-Count:", msg_count, msg_token)
-    for line in data.split("\n"):
+    for line in data.decode().split("\n"):
         print(line)
     return web.Response()
 
