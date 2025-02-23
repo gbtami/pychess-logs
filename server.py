@@ -2,15 +2,7 @@ import asyncio
 import os
 import sys
 
-if sys.platform not in ("win32", "darwin"):
-    import uvloop
-else:
-    print("uvloop not installed")
-
 from aiohttp import web
-
-if sys.platform not in ("win32", "darwin"):
-    asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 
 
 async def logs(request):
