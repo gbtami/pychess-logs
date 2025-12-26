@@ -49,15 +49,17 @@ async def logs(request):
     # msg_count = request.headers["Logplex-Msg-Count"]
     # print("Logplex-Msg-Count:", msg_count, msg_token)
     for line in data.decode().split("\n"):
-        # we want to remove the prefix that comes from heroku/logplex in lines like these:
-        # 160 <190>1 2025-12-26T12:07:27.672845+00:00 host app web.1 - 2025-12-26 12:07:27,672.672 [WARNING] Anon–XqbjtBZ1 jB0w33OM users:58 users.get() HGMuller NOT IN db
-        # and we want to completely skip lines like these, which are basically the access log from heroku web server:
-        # 331 <134>1 2025-12-26T12:07:27.898551+00:00 host heroku router - at=info method=GET path="/static/chessground.css" host=asdasdasd request_id=ea6a6ea1-587d-fd93-95fd-b2617cf4ca6b fwd="" dyno=web.1 connect=0ms service=2ms status=304 bytes=0 protocol=http1.1 tls=true tls_version=unknown
         if "host heroku router -" in line:
+            # we want to completely skip lines like these, which are basically the access log from heroku web server:
+            # 331 <134>1 2025-12-26T12:07:27.898551+00:00 host heroku router - at=info method=GET path="/static/chessground.css" host=asdasdasd request_id=ea6a6ea1-587d-fd93-95fd-b2617cf4ca6b fwd="" dyno=web.1 connect=0ms service=2ms status=304 bytes=0 protocol=http1.1 tls=true tls_version=unknown
             continue
         else:
+            # we want to remove the prefix that comes from heroku/logplex in lines like these:
+            # 160 <190>1 2025-12-26T12:07:27.672845+00:00 host app web.1 - 2025-12-26 12:07:27,672.672 [WARNING] Anon–XqbjtBZ1 jB0w33OM users:58 users.get() HGMuller NOT IN db
             x = line.split("host app web.1 - ")
-            log.info(x[1])
+            if len(x) > 1:
+                # and we ignore lines that don't look like this at all, so only print if line.split succeeded
+                log.info(x[1])
     return web.Response()
 
 
